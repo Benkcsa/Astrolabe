@@ -1,0 +1,59 @@
+/* Astrolabe color palette (from colors.md) and shared design tokens. */
+
+:root {
+  /* Row 1 */
+  --c-cream: #f1efe8;
+  --c-bone: #e9dcd3;
+  --c-amber: #fdbb5b;
+  --c-coral: #f16042;
+  --c-pink: #ef476e;
+  --c-purple: #582d90;
+  --c-ink: #130c1b;
+
+  /* Row 2 */
+  --c-red: #cb2533;
+  --c-orange: #faa21e;
+  --c-green: #6abd45;
+  --c-green-2: #4bba7a;
+  --c-teal: #5ec3b0;
+  --c-magenta: #d61b5c;
+  --c-maroon: #ab1d49;
+
+  /* Semantic roles */
+  --bg: var(--c-ink);
+  --bg-panel: #1c1426;
+  --bg-elevated: #2a1f38;
+  --surface: #241a33;
+  --surface-2: #2f2342;
+  --on-surface: var(--c-cream);
+  --on-bg: var(--c-cream);
+  --accent: var(--c-pink);
+  --accent-2: var(--c-purple);
+  --border: #3a2c4d;
+  --border-strong: #4a3a63;
+  --danger: var(--c-red);
+  --ok: var(--c-green-2);
+  --highlight: var(--c-teal);
+
+  /* Field + label tokens (dark sheets) */
+  --field-bg: #160f22;
+  --field-border: #52406e;
+  --field-text: var(--c-cream);
+  --label-bg: var(--c-maroon);
+  --label-fg: var(--c-cream);
+
+  /* Fonts */
+  --font-display: 'Powerr', 'Schabo', system-ui, sans-serif;
+  --font-heading: 'Schabo', 'Rimma Sans', system-ui, sans-serif;
+  --font-mono: 'Feature Mono', ui-monospace, 'Cascadia Code', monospace;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-fat: 'Free Fat Font', 'Schabo', sans-serif;
+  --font-body: 'Feature Mono', system-ui, sans-serif;
+  --font-sheet: 'Rimma Sans', system-ui, sans-serif;
+
+  /* Metrics */
+  --radius: 6px;
+  --radius-sm: 3px;
+  --gap: 8px;
+  --topbar-h: 44px;
+}

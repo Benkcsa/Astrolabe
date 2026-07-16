@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--on-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-family: var(--font-heading);
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-2);
+}
+
+/* Shared sheet primitives */
+.sheet {
+  background: var(--surface);
+  color: var(--on-surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+.label {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--label-bg);
+  color: var(--label-fg);
+  padding: 3px 9px 1px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  font-size: 17px;
+  line-height: 1.1;
+}
+
+.field-grid {
+  display: grid;
+  gap: var(--gap);
+}

@@ -1,0 +1,14 @@
+#f1efe8
+#e9dcd3
+#fdbb5b
+#f16042
+#ef476e
+#582d90
+#130c1b
+#cb2533
+#faa21e
+#6abd45
+#4bba7a
+#5ec3b0
+#d61b5c
+#ab1d49
