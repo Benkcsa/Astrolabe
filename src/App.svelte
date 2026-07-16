@@ -77,40 +77,44 @@
 </script>
 
 <header class="topbar">
+  <div class="side left">
+    <div class="group">
+      <span class="cap">Campaign</span>
+      <select value={$activeCampaignId} on:change={onSelectCampaign}>
+        {#each $campaigns as c}
+          <option value={c.id}>{c.name}</option>
+        {/each}
+      </select>
+      <button class="tb" on:click={onNewCampaign} title="New campaign">New</button>
+      <button class="tb" on:click={onRenameCampaign} title="Rename campaign">Rename</button>
+      <button class="tb danger" on:click={onDeleteCampaign} title="Delete campaign">Delete</button>
+    </div>
+  </div>
+
   <div class="brand">ASTROLABE</div>
 
-  <div class="group push">
-    <span class="cap">Campaign</span>
-    <select value={$activeCampaignId} on:change={onSelectCampaign}>
-      {#each $campaigns as c}
-        <option value={c.id}>{c.name}</option>
+  <div class="side right">
+    <div class="group">
+      <span class="cap">Panes</span>
+      {#each paneCounts as n}
+        <button class="tb" class:active={$layout.paneCount === n} on:click={() => setPaneCount(n)}>
+          {n}
+        </button>
       {/each}
-    </select>
-    <button class="tb" on:click={onNewCampaign} title="New campaign">New</button>
-    <button class="tb" on:click={onRenameCampaign} title="Rename campaign">Rename</button>
-    <button class="tb danger" on:click={onDeleteCampaign} title="Delete campaign">Delete</button>
-  </div>
+    </div>
 
-  <div class="group">
-    <span class="cap">Panes</span>
-    {#each paneCounts as n}
-      <button class="tb" class:active={$layout.paneCount === n} on:click={() => setPaneCount(n)}>
-        {n}
-      </button>
-    {/each}
-  </div>
-
-  <div class="group right">
-    <button class="tb" on:click={exportActiveCampaign} title="Export campaign (text only)">Export</button>
-    <button class="tb" on:click={() => importInput.click()} title="Import campaign">Import</button>
-    <button class="tb" on:click={() => (showCredits = true)} title="Credits & licenses">Credits</button>
-    <input
-      bind:this={importInput}
-      type="file"
-      accept="application/json"
-      style="display:none"
-      on:change={onImportFile}
-    />
+    <div class="group">
+      <button class="tb" on:click={exportActiveCampaign} title="Export campaign (text only)">Export</button>
+      <button class="tb" on:click={() => importInput.click()} title="Import campaign">Import</button>
+      <button class="tb" on:click={() => (showCredits = true)} title="Credits & licenses">Credits</button>
+      <input
+        bind:this={importInput}
+        type="file"
+        accept="application/json"
+        style="display:none"
+        on:change={onImportFile}
+      />
+    </div>
   </div>
 </header>
 
@@ -144,16 +148,23 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
+  .side {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+  .side.left {
+    justify-content: flex-start;
+  }
+  .side.right {
+    justify-content: flex-end;
+  }
   .group {
     display: flex;
     align-items: center;
     gap: 4px;
-  }
-  .group.push {
-    margin-left: auto;
-  }
-  .group.right {
-    margin-left: auto;
   }
   .cap {
     font-family: 'Genesys', var(--font-heading);

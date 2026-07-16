@@ -169,12 +169,12 @@
   .fm-grid {
     flex: 1;
     min-height: 0;
-    overflow: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
     gap: 8px;
-    align-content: start;
-    align-items: start;
     border: 2px dashed transparent;
     border-radius: var(--radius);
     padding: 4px;
@@ -184,7 +184,7 @@
     background: #ffffff11;
   }
   .empty {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
     opacity: 0.6;
     text-align: center;
     padding: 30px 10px;
@@ -192,6 +192,7 @@
   }
   .card {
     margin: 0;
+    flex: 0 0 128px;
     background: var(--bg-elevated);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
@@ -199,7 +200,7 @@
     cursor: grab;
     display: flex;
     flex-direction: column;
-    align-self: start;
+    align-self: flex-start;
   }
   .thumb {
     width: 100%;
