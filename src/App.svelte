@@ -79,7 +79,7 @@
 <header class="topbar">
   <div class="brand">ASTROLABE</div>
 
-  <div class="group">
+  <div class="group push">
     <span class="cap">Campaign</span>
     <select value={$activeCampaignId} on:change={onSelectCampaign}>
       {#each $campaigns as c}
@@ -148,6 +148,9 @@
     display: flex;
     align-items: center;
     gap: 4px;
+  }
+  .group.push {
+    margin-left: auto;
   }
   .group.right {
     margin-left: auto;

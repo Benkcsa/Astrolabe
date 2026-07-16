@@ -101,18 +101,20 @@
       <div class="empty">Drop images here or use Upload. Drag a thumbnail onto a sheet field.</div>
     {/if}
     {#each filtered as img (img.id)}
-      <figure class="card" draggable="true" on:dragstart={(e) => onDragStart(e, img)}>
-        {#await thumbUrl(img.id) then url}
-          <img src={url} alt={img.name} draggable="false" />
-        {/await}
-        <figcaption title={img.name}>{img.name}</figcaption>
+      <div class="card" draggable="true" on:dragstart={(e) => onDragStart(e, img)} role="listitem">
+        <div class="thumb">
+          {#await thumbUrl(img.id) then url}
+            <img src={url} alt={img.name} draggable="false" />
+          {/await}
+        </div>
+        <div class="cap" title={img.name}>{img.name}</div>
         <div class="card-actions">
           <select value={img.category} on:change={(e) => onCatChange(img.id, e)}>
             {#each cats as c}<option value={c}>{c}</option>{/each}
           </select>
-          <button class="del" title="Delete" on:click={() => deleteImage(img.id)}>Del</button>
+          <button class="del" title="Delete" on:click={() => deleteImage(img.id)}>X</button>
         </div>
-      </figure>
+      </div>
     {/each}
   </div>
 </div>
@@ -197,14 +199,21 @@
     cursor: grab;
     display: flex;
     flex-direction: column;
+    align-self: start;
   }
-  .card img {
+  .thumb {
     width: 100%;
     height: 96px;
+    flex: 0 0 96px;
+    overflow: hidden;
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
   }
-  figcaption {
+  .cap {
     font-size: 10px;
     padding: 3px 4px;
     white-space: nowrap;
@@ -228,8 +237,9 @@
     color: #fff;
     border: none;
     border-radius: var(--radius-sm);
-    padding: 2px 8px;
-    font-size: 11px;
+    padding: 2px 9px;
+    font-family: var(--font-heading);
+    font-size: 13px;
     flex-shrink: 0;
   }
 </style>

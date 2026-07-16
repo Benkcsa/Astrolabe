@@ -273,7 +273,7 @@
   }
   .serum-sym {
     font-family: 'ST Cyberillic', var(--font-heading);
-    font-size: 44px;
+    font-size: 26px;
     line-height: 1;
     color: var(--c-pink);
   }
