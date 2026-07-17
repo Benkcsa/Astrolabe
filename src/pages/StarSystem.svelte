@@ -111,9 +111,10 @@
     opacity: 0.8;
   }
   .factions {
-    display: flex;
-    justify-content: space-between;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 8px;
+    justify-items: center;
   }
   .faction {
     display: flex;

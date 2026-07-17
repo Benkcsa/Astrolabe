@@ -83,8 +83,8 @@
     color: var(--field-text);
     font-family: 'Genesys', var(--font-sheet);
     font-weight: 700;
-    line-height: 1.4;
-    padding: 4px 2px;
+    line-height: 1.55;
+    padding: 5px 2px;
     box-sizing: border-box;
   }
   .nf-input:focus {
@@ -92,8 +92,10 @@
     background: #ffffff18;
   }
   .sm .nf-input {
-    width: 30px;
-    font-size: 12px;
+    width: 32px;
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 5px 2px;
   }
   .sm .nf-btn {
     width: 18px;
