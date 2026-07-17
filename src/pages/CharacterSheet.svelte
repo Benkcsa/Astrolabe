@@ -308,9 +308,6 @@
     align-items: center;
     gap: 2px;
   }
-  .counter :global(.nf-input) {
-    font-family: 'Genesys', var(--font-mono);
-  }
   .attrs {
     display: flex;
     flex-wrap: wrap;

@@ -83,6 +83,9 @@
     color: var(--field-text);
     font-family: var(--font-sheet);
     font-weight: 700;
+    line-height: 1.4;
+    padding: 4px 2px;
+    box-sizing: border-box;
   }
   .nf-input:focus {
     outline: none;

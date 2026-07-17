@@ -216,7 +216,7 @@
           <circle
             cx={cell.cx}
             cy={cell.cy}
-            r={SIZE * 0.42}
+            r={SIZE * 0.58}
             class="starcircle"
             style={hexes[0]?.color ? `fill:${hexes[0].color}` : ''}
           />
@@ -353,8 +353,6 @@
   }
   .starcircle {
     fill: var(--c-ink);
-    stroke: var(--c-cream);
-    stroke-width: 1.5;
     pointer-events: none;
   }
   .hex-base {
