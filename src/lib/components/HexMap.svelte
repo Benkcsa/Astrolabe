@@ -102,27 +102,20 @@
     $starSystem = { ...$starSystem, starMap: { ...$starSystem.starMap, hexes } };
   }
 
-  // Fill palette for edit mode: astroprisma black, white, and the gradient colours.
+  // Sun disk colours: astroprisma black, white, and the four gradient colours.
   const SWATCHES: { label: string; value: string | null }[] = [
-    { label: 'Default', value: null },
-    { label: 'Black', value: '#130c1b' },
-    { label: 'White', value: '#f1efe8' },
-    { label: 'Amber', value: '#fdbb5b' },
-    { label: 'Coral', value: '#f16042' },
-    { label: 'Pink', value: '#ef476e' },
-    { label: 'Purple', value: '#582d90' },
-    { label: 'Red', value: '#cb2533' },
-    { label: 'Orange', value: '#faa21e' },
-    { label: 'Green', value: '#6abd45' },
-    { label: 'Emerald', value: '#4bba7a' },
-    { label: 'Teal', value: '#5ec3b0' },
-    { label: 'Magenta', value: '#d61b5c' },
-    { label: 'Maroon', value: '#ab1d49' }
+    { label: 'Astroprisma Black', value: '#130c1b' },
+    { label: 'Astroprisma White', value: '#f1efe8' },
+    { label: 'Gradient Yellow', value: '#fdbb5b' },
+    { label: 'Gradient Orange', value: '#f16042' },
+    { label: 'Gradient Magenta', value: '#ef476e' },
+    { label: 'Gradient Indigo', value: '#582d90' }
   ];
 
   function setColor(v: string | null) {
-    if (selectedHex === null) return;
-    setHex(selectedHex, { color: v });
+    // Only the sun (hex 0) disk colour is changeable.
+    if (selectedHex !== 0) return;
+    setHex(0, { color: v });
   }
 
   function travel(n: number) {
@@ -203,14 +196,7 @@
         {/each}
       </defs>
       {#each cells as cell (cell.n)}
-        <polygon
-          points={cell.points}
-          class="hex-base"
-          class:mark={markIndex === cell.n}
-          class:thick={hexes[cell.n]?.thick}
-          class:sel={selectedHex === cell.n}
-          style={hexes[cell.n]?.color ? `fill:${hexes[cell.n].color}` : ''}
-        />
+        <polygon points={cell.points} class="hex-base" />
         {#key hexes[cell.n]?.imageId}
           {#await resolveImageUrl(hexes[cell.n]?.imageId ?? null) then url}
             {#if url}
@@ -227,7 +213,13 @@
           {/await}
         {/key}
         {#if cell.star}
-          <circle cx={cell.cx} cy={cell.cy} r={SIZE * 0.42} class="starcircle" />
+          <circle
+            cx={cell.cx}
+            cy={cell.cy}
+            r={SIZE * 0.42}
+            class="starcircle"
+            style={hexes[0]?.color ? `fill:${hexes[0].color}` : ''}
+          />
         {/if}
         {#if hexes[cell.n]?.text}
           <circle cx={cell.cx - SIZE * 0.55} cy={cell.cy - SIZE * 0.5} r="4" class="dot" />
@@ -243,6 +235,23 @@
           on:drop={(e) => onDrop(e, cell.n)}
           on:dragover={onDragOver}
         />
+      {/each}
+
+      <!-- Bold + mark borders: above hex fills/images, below numbering & selection. -->
+      {#each cells as cell (`b${cell.n}`)}
+        {#if hexes[cell.n]?.thick}
+          <polygon points={cell.points} class="hex-border thick" />
+        {/if}
+        {#if markIndex === cell.n}
+          <polygon points={cell.points} class="hex-border mark" />
+        {/if}
+      {/each}
+
+      <!-- Selection highlight: above the bold border. -->
+      {#each cells as cell (`s${cell.n}`)}
+        {#if selectedHex === cell.n}
+          <polygon points={cell.points} class="hex-sel" />
+        {/if}
       {/each}
 
       <!-- Numbers drawn last so neighbouring hexes never cover them. -->
@@ -263,23 +272,23 @@
     {#if selectedHex === null}
       <span class="hexbox-empty">
         {mode === 'edit'
-          ? 'Click a hex to toggle its border and edit it. Pick a fill colour, drop images from Files.'
+          ? 'Click a hex to toggle its border and edit it. Select the star to change its colour, drop images from Files.'
           : 'Right-click a hex to view its text. Click to travel.'}
       </span>
     {:else}
       <div class="hexbox-head">Hex {selectedHex === 0 ? 'STAR' : selectedHex}</div>
-      {#if mode === 'edit'}
+      {#if mode === 'edit' && selectedHex === 0}
+        <div class="swatch-label">Sun colour</div>
         <div class="swatches">
           {#each SWATCHES as sw}
             <button
               class="sw"
-              class:none={sw.value === null}
-              class:selsw={(hexes[selectedHex].color ?? null) === sw.value}
+              class:selsw={(hexes[0].color ?? '#130c1b') === sw.value}
               style={sw.value ? `background:${sw.value}` : ''}
               title={sw.label}
               aria-label={sw.label}
               on:click={() => setColor(sw.value)}
-            >{sw.value === null ? '×' : ''}</button>
+            ></button>
           {/each}
         </div>
       {/if}
@@ -353,15 +362,23 @@
     stroke: var(--accent);
     stroke-width: 1.2;
   }
-  .hex-base.mark {
+  .hex-border {
+    fill: none;
+    pointer-events: none;
+  }
+  .hex-border.thick {
+    stroke: var(--accent);
+    stroke-width: 7;
+  }
+  .hex-border.mark {
     stroke: var(--c-amber);
     stroke-width: 4;
   }
-  .hex-base.thick {
-    stroke-width: 7;
-  }
-  .hex-base.sel {
+  .hex-sel {
+    fill: none;
+    pointer-events: none;
     stroke: var(--c-teal);
+    stroke-width: 3;
   }
   .hexnum {
     fill: var(--c-cream);
@@ -408,6 +425,12 @@
     padding: 6px;
     resize: vertical;
   }
+  .swatch-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
   .swatches {
     display: flex;
     flex-wrap: wrap;
@@ -421,12 +444,6 @@
     border: 1px solid var(--field-border);
     padding: 0;
     cursor: pointer;
-  }
-  .sw.none {
-    background: var(--field-bg);
-    color: var(--c-cream);
-    font-size: 12px;
-    line-height: 1;
   }
   .sw.selsw {
     outline: 2px solid var(--c-amber);
