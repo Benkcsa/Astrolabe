@@ -53,3 +53,8 @@ Astrolabe is an independent production by Benkcsa/[ircuit and is **not** affilia
 ASTROPRISMA is copyright **Camila Mera and Crescent Chimera**.
 
 The Astrolabe source code is released under the **MIT License** - free to use, copy, modify, and distribute. See [LICENSE](LICENSE) for details.
+### Fonts
+
+- **Instrument Serif** and **Genesys** are licensed under the **SIL Open Font License, Version 1.1** ? see [OFL.txt](OFL.txt).
+- **Feature Mono** is free to use on one condition ? attribution: *Feature Mono developed by Anastasia Vrublevskaya at HSE ART AND DESIGN SCHOOL.*
+- All other bundled fonts (Schabo, Powerr, Rimma Sans, Free Fat Font, Qiqito, ST Cyberillic) are public domain / free for commercial use, with no further licensing required.

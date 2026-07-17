@@ -30,6 +30,11 @@
         The Astrolabe source code is released under the MIT License - free to use, copy, modify,
         and distribute.
       </p>
+      <p class="fonts">
+        Fonts: Instrument Serif and Genesys are licensed under the SIL Open Font License 1.1.
+        Feature Mono developed by Anastasia Vrublevskaya at HSE ART AND DESIGN SCHOOL. All other
+        bundled fonts are public domain / free for commercial use.
+      </p>
     </div>
   </div>
 </div>
@@ -89,5 +94,9 @@
     opacity: 0.85;
     border-top: 1px solid var(--border);
     padding-top: 12px;
+  }
+  .fonts {
+    opacity: 0.6;
+    font-size: 11px;
   }
 </style>
