@@ -67,7 +67,7 @@
     background: var(--accent-2);
     color: var(--c-cream);
     width: 22px;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1;
     display: grid;
     place-items: center;
