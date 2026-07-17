@@ -24,11 +24,6 @@
     $character = $character;
   }
 
-  function toggleSkillLock(i: number) {
-    $character.skillsUnlocked[i] = !$character.skillsUnlocked[i];
-    $character = $character;
-  }
-
   function addEnemy() {
     $character.enemies = [...$character.enemies, { id: uid(), health: 0, armor: 0, effects: '' }];
   }
@@ -113,31 +108,6 @@
 
   <!-- RIGHT: identity & gear -->
   <div class="col">
-    <div class="sheet block">
-      <span class="label">Passive</span>
-      <TextField placeholder="Passive" bind:value={$character.passive} />
-      <span class="cap2">Skills</span>
-      {#each $character.skills as _, i}
-        <div class="line">
-          {#if $character.skillsUnlocked[i]}
-            <TextField placeholder={`Skill ${i + 1}`} bind:value={$character.skills[i]} />
-          {:else}
-            <input class="locked" value="Locked" disabled />
-          {/if}
-          {#if i >= 1}
-            <button
-              class="lockbtn"
-              class:locked={!$character.skillsUnlocked[i]}
-              on:click={() => toggleSkillLock(i)}
-              title={$character.skillsUnlocked[i] ? 'Lock skill' : 'Unlock skill'}
-            >
-              {$character.skillsUnlocked[i] ? 'Lock' : 'Unlock'}
-            </button>
-          {/if}
-        </div>
-      {/each}
-    </div>
-
     <div class="sheet block">
       <div class="label full">Memory Slots</div>
       {#each $character.memorySlots as _, i}
