@@ -81,7 +81,7 @@
     width: 42px;
     background: transparent;
     color: var(--field-text);
-    font-family: var(--font-sheet);
+    font-family: 'Genesys', var(--font-sheet);
     font-weight: 700;
     line-height: 1.4;
     padding: 4px 2px;
