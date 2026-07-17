@@ -32,6 +32,8 @@ input,
 textarea,
 select {
   font-family: var(--font-body);
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'clig' 0, 'calt' 0, 'dlig' 0;
 }
 
 ::-webkit-scrollbar {
