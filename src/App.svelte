@@ -55,9 +55,9 @@
     await refreshImages();
   }
 
-  const paneCounts: (1 | 2 | 4)[] = [1, 2, 4];
+  const paneCounts: (1 | 2 | 3 | 4)[] = [1, 2, 3, 4];
 
-  function setPaneCount(n: 1 | 2 | 4) {
+  function setPaneCount(n: 1 | 2 | 3 | 4) {
     $layout.paneCount = n;
     $layout = $layout;
   }

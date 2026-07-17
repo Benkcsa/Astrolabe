@@ -179,6 +179,7 @@ export function defaultLayout(): LayoutState {
     paneCount: 1,
     panes: ['character', 'journal', 'starship', 'files'],
     sizes2: [50, 50],
+    sizes3: [34, 33, 33],
     sizes4: [50, 50, 50],
     boxOrder: {}
   };

@@ -162,9 +162,10 @@ export interface JournalState {
 
 /* ---------- Layout ---------- */
 export interface LayoutState {
-  paneCount: 1 | 2 | 4;
+  paneCount: 1 | 2 | 3 | 4;
   panes: TabId[]; // length 4; first paneCount are shown
   sizes2: [number, number]; // % split for 2-pane
+  sizes3: [number, number, number]; // three column widths for 3-pane
   sizes4: [number, number, number]; // [col %, left-row %, right-row %] for 2x2
   boxOrder: Record<string, string[]>; // reorderable box groups
 }
