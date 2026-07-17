@@ -107,7 +107,7 @@
         {#if !entry.collapsed}
           <textarea
             class="entry-body"
-            placeholder="Write here? (Markdown / plain text). Rolls append to the selected entry."
+            placeholder="Awaiting input..."
             bind:value={entry.body}
             on:focus={() => selectEntry(entry.id)}
           ></textarea>
