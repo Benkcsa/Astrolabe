@@ -16,9 +16,9 @@ export function uid(): string {
 
 export const DEFAULT_FACTIONS: FactionDef[] = [
   { id: 'warg', name: 'WARG', imageId: null },
-  { id: 'isf', name: 'Intersolar', imageId: null },
+  { id: 'isf', name: 'ISF', imageId: null },
   { id: 'medusa', name: 'Medusa', imageId: null },
-  { id: 'synth', name: 'Synth', imageId: null },
+  { id: 'synth', name: 'Synth Arch', imageId: null },
   { id: 'corsair', name: 'Corsair', imageId: null }
 ];
 

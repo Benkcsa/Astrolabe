@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <div class="brand">ASTROLABE</div>
+  <div class="brand"><span class="first-a">A</span>STROLABE</div>
 
   <div class="side right">
     <div class="group">
@@ -147,6 +147,9 @@
     color: var(--c-amber);
     white-space: nowrap;
     flex-shrink: 0;
+  }
+  .brand .first-a {
+    font-style: italic;
   }
   .side {
     display: flex;
