@@ -91,12 +91,38 @@
     return (Math.abs(dq) + Math.abs(dq + dr) + Math.abs(dr)) / 2;
   }
 
-  function setHex(n: number, patch: Partial<{ imageId: string | null; text: string }>) {
+  function setHex(
+    n: number,
+    patch: Partial<{ imageId: string | null; text: string; color: string | null; thick: boolean }>
+  ) {
     const hexes = {
       ...$starSystem.starMap.hexes,
       [n]: { ...$starSystem.starMap.hexes[n], ...patch }
     };
     $starSystem = { ...$starSystem, starMap: { ...$starSystem.starMap, hexes } };
+  }
+
+  // Fill palette for edit mode: astroprisma black, white, and the gradient colours.
+  const SWATCHES: { label: string; value: string | null }[] = [
+    { label: 'Default', value: null },
+    { label: 'Black', value: '#130c1b' },
+    { label: 'White', value: '#f1efe8' },
+    { label: 'Amber', value: '#fdbb5b' },
+    { label: 'Coral', value: '#f16042' },
+    { label: 'Pink', value: '#ef476e' },
+    { label: 'Purple', value: '#582d90' },
+    { label: 'Red', value: '#cb2533' },
+    { label: 'Orange', value: '#faa21e' },
+    { label: 'Green', value: '#6abd45' },
+    { label: 'Emerald', value: '#4bba7a' },
+    { label: 'Teal', value: '#5ec3b0' },
+    { label: 'Magenta', value: '#d61b5c' },
+    { label: 'Maroon', value: '#ab1d49' }
+  ];
+
+  function setColor(v: string | null) {
+    if (selectedHex === null) return;
+    setHex(selectedHex, { color: v });
   }
 
   function travel(n: number) {
@@ -110,8 +136,13 @@
   }
 
   function onClick(n: number) {
-    if (mode === 'edit') selectedHex = n;
-    else travel(n);
+    if (mode === 'edit') {
+      selectedHex = n;
+      // Left-click in edit toggles a much thicker border for this hex.
+      setHex(n, { thick: !$starSystem.starMap.hexes[n].thick });
+    } else {
+      travel(n);
+    }
   }
 
   function onContext(e: MouseEvent, n: number) {
@@ -147,10 +178,10 @@
   function clearMap() {
     if (!confirm('Clear the entire star system map? This deletes all images and text entries.'))
       return;
-    const hexes: Record<number, { imageId: string | null; text: string }> = {};
-    for (let i = 1; i <= 36; i++) hexes[i] = { imageId: null, text: '' };
+    const hexes: Record<number, { imageId: string | null; text: string; color: string | null; thick: boolean }> = {};
+    for (let i = 0; i <= 36; i++) hexes[i] = { imageId: null, text: '', color: null, thick: false };
     selectedHex = null;
-    $starSystem = { ...$starSystem, starMap: { hexes, markIndex: null } };
+    $starSystem = { ...$starSystem, starMap: { hexes, markIndex: 0 } };
   }
 </script>
 
@@ -168,62 +199,54 @@
     <svg {viewBox} preserveAspectRatio="xMidYMid meet">
       <defs>
         {#each cells as cell}
-          {#if !cell.star}
-            <clipPath id="clip-{cell.n}"><polygon points={cell.points} /></clipPath>
-          {/if}
+          <clipPath id="clip-{cell.n}"><polygon points={cell.points} /></clipPath>
         {/each}
       </defs>
-      {#each cells as cell (cell.star ? 'star' : cell.n)}
+      {#each cells as cell (cell.n)}
+        <polygon
+          points={cell.points}
+          class="hex-base"
+          class:mark={markIndex === cell.n}
+          class:thick={hexes[cell.n]?.thick}
+          class:sel={selectedHex === cell.n}
+          style={hexes[cell.n]?.color ? `fill:${hexes[cell.n].color}` : ''}
+        />
+        {#key hexes[cell.n]?.imageId}
+          {#await resolveImageUrl(hexes[cell.n]?.imageId ?? null) then url}
+            {#if url}
+              <image
+                href={url}
+                x={cell.cx - SIZE}
+                y={cell.cy - HH / 2}
+                width={SIZE * 2}
+                height={HH}
+                preserveAspectRatio="xMidYMid slice"
+                clip-path="url(#clip-{cell.n})"
+              />
+            {/if}
+          {/await}
+        {/key}
         {#if cell.star}
-          <polygon points={cell.points} class="hex-star" />
-          <text
-            x={cell.cx}
-            y={cell.cy}
-            class="starlbl"
-            dominant-baseline="central"
-            text-anchor="middle">STAR</text
-          >
-        {:else}
-          <polygon
-            points={cell.points}
-            class="hex-base"
-            class:mark={markIndex === cell.n}
-            class:sel={selectedHex === cell.n}
-          />
-          {#key hexes[cell.n].imageId}
-            {#await resolveImageUrl(hexes[cell.n].imageId) then url}
-              {#if url}
-                <image
-                  href={url}
-                  x={cell.cx - SIZE}
-                  y={cell.cy - HH / 2}
-                  width={SIZE * 2}
-                  height={HH}
-                  preserveAspectRatio="xMidYMid slice"
-                  clip-path="url(#clip-{cell.n})"
-                />
-              {/if}
-            {/await}
-          {/key}
-          {#if hexes[cell.n].text}
-            <circle cx={cell.cx - SIZE * 0.55} cy={cell.cy - SIZE * 0.5} r="4" class="dot" />
-          {/if}
-          <polygon
-            points={cell.points}
-            class="hex-hit"
-            class:editmode={mode === 'edit'}
-            role="button"
-            tabindex="-1"
-            on:click={() => onClick(cell.n)}
-            on:contextmenu={(e) => onContext(e, cell.n)}
-            on:drop={(e) => onDrop(e, cell.n)}
-            on:dragover={onDragOver}
-          />
+          <circle cx={cell.cx} cy={cell.cy} r={SIZE * 0.42} class="starcircle" />
         {/if}
+        {#if hexes[cell.n]?.text}
+          <circle cx={cell.cx - SIZE * 0.55} cy={cell.cy - SIZE * 0.5} r="4" class="dot" />
+        {/if}
+        <polygon
+          points={cell.points}
+          class="hex-hit"
+          class:editmode={mode === 'edit'}
+          role="button"
+          tabindex="-1"
+          on:click={() => onClick(cell.n)}
+          on:contextmenu={(e) => onContext(e, cell.n)}
+          on:drop={(e) => onDrop(e, cell.n)}
+          on:dragover={onDragOver}
+        />
       {/each}
 
       <!-- Numbers drawn last so neighbouring hexes never cover them. -->
-      {#each cells as cell (cell.star ? 'starnum' : `n${cell.n}`)}
+      {#each cells as cell (`n${cell.n}`)}
         {#if !cell.star}
           <text
             x={cell.cx + SIZE * 0.42}
@@ -240,11 +263,26 @@
     {#if selectedHex === null}
       <span class="hexbox-empty">
         {mode === 'edit'
-          ? 'Click a hex to edit its text. Drop images from Files.'
+          ? 'Click a hex to toggle its border and edit it. Pick a fill colour, drop images from Files.'
           : 'Right-click a hex to view its text. Click to travel.'}
       </span>
     {:else}
-      <div class="hexbox-head">Hex {selectedHex}</div>
+      <div class="hexbox-head">Hex {selectedHex === 0 ? 'STAR' : selectedHex}</div>
+      {#if mode === 'edit'}
+        <div class="swatches">
+          {#each SWATCHES as sw}
+            <button
+              class="sw"
+              class:none={sw.value === null}
+              class:selsw={(hexes[selectedHex].color ?? null) === sw.value}
+              style={sw.value ? `background:${sw.value}` : ''}
+              title={sw.label}
+              aria-label={sw.label}
+              on:click={() => setColor(sw.value)}
+            >{sw.value === null ? '×' : ''}</button>
+          {/each}
+        </div>
+      {/if}
       <textarea
         class="hexbox-text"
         placeholder="Notes for this hex..."
@@ -304,13 +342,11 @@
     height: 100%;
     display: block;
   }
-  .hex-star {
+  .starcircle {
     fill: var(--c-ink);
-  }
-  .starlbl {
-    fill: var(--c-cream);
-    font-family: var(--font-serif);
-    font-size: 16px;
+    stroke: var(--c-cream);
+    stroke-width: 1.5;
+    pointer-events: none;
   }
   .hex-base {
     fill: #3a2c52;
@@ -321,8 +357,11 @@
     stroke: var(--c-amber);
     stroke-width: 4;
   }
+  .hex-base.thick {
+    stroke-width: 7;
+  }
   .hex-base.sel {
-    fill: var(--c-teal);
+    stroke: var(--c-teal);
   }
   .hexnum {
     fill: var(--c-cream);
@@ -368,5 +407,29 @@
     font-size: 14px;
     padding: 6px;
     resize: vertical;
+  }
+  .swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 6px;
+  }
+  .sw {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--field-border);
+    padding: 0;
+    cursor: pointer;
+  }
+  .sw.none {
+    background: var(--field-bg);
+    color: var(--c-cream);
+    font-size: 12px;
+    line-height: 1;
+  }
+  .sw.selsw {
+    outline: 2px solid var(--c-amber);
+    outline-offset: 1px;
   }
 </style>

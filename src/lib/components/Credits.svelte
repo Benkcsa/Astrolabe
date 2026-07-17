@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
+  const logoSrc = import.meta.env.BASE_URL + 'astroprisma-3pl-white.png';
 
   function close() {
     dispatch('close');
@@ -18,7 +19,7 @@
   <div class="modal" on:click|stopPropagation role="dialog" aria-modal="true" aria-label="Credits">
     <button class="close" on:click={close} title="Close" aria-label="Close">x</button>
 
-    <img class="logo" src="/astroprisma-3pl-white.png" alt="ASTROPRISMA Third Party License" />
+    <img class="logo" src={logoSrc} alt="ASTROPRISMA Third Party License" />
 
     <div class="credits-body">
       <p>

@@ -128,10 +128,12 @@ export interface NetworkMap {
 export interface HexTile {
   imageId: string | null;
   text: string;
+  color?: string | null; // custom fill (hex string) or null for default
+  thick?: boolean; // thick border toggle
 }
 
 export interface StarMap {
-  hexes: Record<number, HexTile>; // keyed 1..36
+  hexes: Record<number, HexTile>; // keyed 0..36 (0 = star / start)
   markIndex: number | null;
 }
 

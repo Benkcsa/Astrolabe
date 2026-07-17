@@ -146,7 +146,7 @@ export function defaultStarship(): StarshipState {
 
 export function defaultStarSystem(): StarSystemState {
   const hexes: StarSystemState['starMap']['hexes'] = {};
-  for (let i = 1; i <= 36; i++) hexes[i] = { imageId: null, text: '' };
+  for (let i = 0; i <= 36; i++) hexes[i] = { imageId: null, text: '', color: null, thick: false };
   return {
     systemName: '',
     systemType: '',
@@ -165,7 +165,7 @@ export function defaultStarSystem(): StarSystemState {
     },
     starMap: {
       hexes,
-      markIndex: null
+      markIndex: 0
     }
   };
 }

@@ -97,6 +97,20 @@ async function loadCampaignState(id: string) {
     while (t.length < 10) t.push(0);
     ss.network.tiles = t.slice(0, 10);
   }
+  if (ss?.starMap) {
+    const h = ss.starMap.hexes ?? {};
+    for (let i = 0; i <= 36; i++) {
+      const cur = h[i] ?? {};
+      h[i] = {
+        imageId: cur.imageId ?? null,
+        text: cur.text ?? '',
+        color: cur.color ?? null,
+        thick: cur.thick ?? false
+      };
+    }
+    ss.starMap.hexes = h;
+    if (ss.starMap.markIndex == null) ss.starMap.markIndex = 0;
+  }
   if (ss) ss.factionStrength = toMap(ss.factionStrength);
   starSystem.set(ss ? { ...defaultStarSystem(), ...ss } : defaultStarSystem());
 
