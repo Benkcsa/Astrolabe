@@ -67,8 +67,9 @@
     min-height: 60px;
     border: 2px dashed var(--field-border);
     border-radius: var(--radius-sm);
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     background: var(--field-bg);
     cursor: pointer;
@@ -94,8 +95,10 @@
     object-fit: cover;
   }
   img.contain {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
     object-fit: contain;
   }
   .ph {
