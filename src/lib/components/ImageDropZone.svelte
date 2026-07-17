@@ -107,4 +107,8 @@
     text-align: center;
     padding: 4px;
   }
+  .dropzone.light .ph {
+    color: var(--c-ink);
+    opacity: 0.7;
+  }
 </style>

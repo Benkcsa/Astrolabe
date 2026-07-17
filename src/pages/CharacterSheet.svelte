@@ -405,7 +405,7 @@
     opacity: 0.85;
   }
   .locked {
-    flex: 1;
+    flex: 2;
     min-width: 0;
     border: 1px solid var(--field-border);
     border-radius: var(--radius-sm);
@@ -423,6 +423,7 @@
     padding: 2px 6px;
   }
   .lockbtn.locked {
+    flex: 1;
     background: var(--c-amber);
   }
   .inv {

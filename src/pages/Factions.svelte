@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { factions, addFaction, removeFaction, renameFaction } from '../stores/campaign';
+  import { factions, addFaction, removeFaction } from '../stores/campaign';
   import FactionIcon from '../lib/components/FactionIcon.svelte';
-
-  function onName(id: string, e: Event) {
-    renameFaction(id, (e.target as HTMLInputElement).value);
-  }
+  import TextField from '../lib/components/TextField.svelte';
 </script>
 
 <div class="factions-tab">
@@ -14,10 +11,10 @@
   </div>
 
   <div class="grid">
-    {#each $factions as f (f.id)}
+    {#each $factions as f, i (f.id)}
       <div class="fcard sheet">
         <FactionIcon faction={f} size={88} />
-        <input class="fname" value={f.name} on:input={(e) => onName(f.id, e)} placeholder="Name" />
+        <TextField sans align="center" placeholder="Name" bind:value={$factions[i].name} />
         <button class="xbtn" on:click={() => removeFaction(f.id)} title="Remove faction">X</button>
       </div>
     {/each}
@@ -64,21 +61,6 @@
     align-items: center;
     gap: 8px;
     padding: 10px;
-  }
-  .fname {
-    width: 100%;
-    border: 1px solid var(--field-border);
-    border-radius: var(--radius-sm);
-    background: var(--field-bg);
-    color: var(--field-text);
-    font-family: var(--font-sheet);
-    font-size: 14px;
-    padding: 4px 6px;
-    text-align: center;
-  }
-  .fname:focus {
-    outline: none;
-    border-color: var(--accent);
   }
   .xbtn {
     background: var(--danger);
