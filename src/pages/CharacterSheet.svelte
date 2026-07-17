@@ -44,6 +44,11 @@
 <div class="cs">
   <!-- LEFT: system control -->
   <div class="col">
+    <div class="row">
+      <div class="sheet block grow"><span class="label">Name</span><TextField sans bind:value={$character.name} /></div>
+      <div class="sheet block grow"><span class="label">Origin</span><TextField sans bind:value={$character.origin} /></div>
+    </div>
+
     <div class="sheet block">
       <div class="attrs">
         <div class="pair">
@@ -104,35 +109,10 @@
       {/each}
     </div>
 
-    <div class="sheet block enemy">
-      <div class="conn-head">
-        <span class="label">Enemy Tracker</span>
-        <button class="addbtn" on:click={addEnemy}>+ Enemy</button>
-      </div>
-      <div class="enemy-grid">
-        <span></span>
-        <span class="cap2 hcell">HP</span>
-        <span class="cap2 hcell">Armor</span>
-        <span class="cap2 hcell">Effects</span>
-        <span></span>
-        {#each $character.enemies as enemy, i (enemy.id)}
-          <span class="en">{i + 1}</span>
-          <NumberField bind:value={enemy.health} />
-          <NumberField bind:value={enemy.armor} />
-          <TextField placeholder="" bind:value={enemy.effects} />
-          <button class="xbtn" on:click={() => removeEnemy(enemy.id)} title="Delete">X</button>
-        {/each}
-      </div>
-    </div>
   </div>
 
   <!-- RIGHT: identity & gear -->
   <div class="col">
-    <div class="row">
-      <div class="sheet block grow"><span class="label">Name</span><TextField sans bind:value={$character.name} /></div>
-      <div class="sheet block grow"><span class="label">Origin</span><TextField sans bind:value={$character.origin} /></div>
-    </div>
-
     <div class="sheet block">
       <span class="label">Role</span>
       <TextField sans placeholder="Role" bind:value={$character.role} />
@@ -200,6 +180,27 @@
       <div class="inv">
         {#each $character.inventory as _, i}
           <div class="line"><span class="ln">{i + 1}</span><TextField bind:value={$character.inventory[i]} /></div>
+        {/each}
+      </div>
+    </div>
+
+    <div class="sheet block enemy">
+      <div class="conn-head">
+        <span class="label">Enemy Tracker</span>
+        <button class="addbtn" on:click={addEnemy}>+ Enemy</button>
+      </div>
+      <div class="enemy-grid">
+        <span></span>
+        <span class="cap2 hcell">HP</span>
+        <span class="cap2 hcell">Armor</span>
+        <span class="cap2 hcell">Effects</span>
+        <span></span>
+        {#each $character.enemies as enemy, i (enemy.id)}
+          <span class="en">{i + 1}</span>
+          <NumberField bind:value={enemy.health} />
+          <NumberField bind:value={enemy.armor} />
+          <TextField placeholder="" bind:value={enemy.effects} />
+          <button class="xbtn" on:click={() => removeEnemy(enemy.id)} title="Delete">X</button>
         {/each}
       </div>
     </div>

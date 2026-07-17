@@ -79,12 +79,14 @@
     border: none;
     text-align: center;
     width: 42px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 2px;
     background: transparent;
     color: var(--field-text);
     font-family: 'Genesys', var(--font-sheet);
     font-weight: 700;
-    line-height: 1.55;
-    padding: 5px 2px;
+    font-size: 14px;
     box-sizing: border-box;
   }
   .nf-input:focus {
@@ -93,9 +95,9 @@
   }
   .sm .nf-input {
     width: 32px;
+    height: 24px;
+    line-height: 24px;
     font-size: 13px;
-    line-height: 1.65;
-    padding: 5px 2px;
   }
   .sm .nf-btn {
     width: 18px;
@@ -103,8 +105,9 @@
   }
   .lg .nf-input {
     width: 58px;
+    height: 34px;
+    line-height: 34px;
     font-size: 20px;
-    padding: 4px 0;
   }
   .lg .nf-btn {
     width: 28px;
