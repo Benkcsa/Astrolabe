@@ -142,6 +142,7 @@
   }
   .brand {
     font-family: var(--font-display);
+    font-weight: 900;
     font-size: 30px;
     letter-spacing: 0.06em;
     color: var(--c-amber);
