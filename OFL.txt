@@ -1,6 +1,8 @@
-Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)
+Copyright (c) 2021, Willem Dimas (wdimas.work@gmail.com) - Genesys
+Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif) - Instrument Serif
 
-The Genesys typeface is also licensed under the SIL Open Font License, Version 1.1.
+The Genesys and Instrument Serif typefaces are both licensed under the SIL Open
+Font License, Version 1.1.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
