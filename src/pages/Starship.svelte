@@ -1,9 +1,13 @@
 <script lang="ts">
-  import { starship } from '../stores/campaign';
+  import { starship, character } from '../stores/campaign';
   import NumberField from '../lib/components/NumberField.svelte';
   import TextField from '../lib/components/TextField.svelte';
   import ImageDropZone from '../lib/components/ImageDropZone.svelte';
   import { uid } from '../db/defaults';
+
+  // First crew box mirrors the character; this toggles which half of the
+  // character's 8 inventory slots its 4 lines show (0 = 1-4, 1 = 5-8).
+  let invHalf = 0;
 
   const crewStats: [string, 'vig' | 'gra' | 'min' | 'tec'][] = [
     ['Vig', 'vig'],
@@ -103,37 +107,81 @@
   <!-- RIGHT: crew -->
   <div class="col">
     {#each $starship.crew as _, i}
-      <div class="sheet member">
-        <div class="member-head">
-          <span class="cnum">{i + 1}</span>
-          <TextField sans placeholder="Name" bind:value={$starship.crew[i].name} />
-          <NumberField size="sm" label="HP" bind:value={$starship.crew[i].hp} />
-          <NumberField size="sm" label="Armor" bind:value={$starship.crew[i].armor} />
+      {#if i === 0}
+        <div class="sheet member">
+          <div class="member-head">
+            <span class="cnum">1</span>
+            <TextField sans placeholder="Name" bind:value={$character.name} />
+            <NumberField size="sm" label="HP" bind:value={$character.health} />
+            <NumberField size="sm" label="Armor" bind:value={$character.armor} />
+          </div>
+          <div class="row">
+            <TextField sans placeholder="Role" bind:value={$character.role} />
+            <TextField placeholder="Passive" bind:value={$character.passive} />
+          </div>
+          <div class="row cstats">
+            <NumberField size="sm" label="Vig" bind:value={$character.vigor} />
+            <NumberField size="sm" label="Gra" bind:value={$character.grace} />
+            <NumberField size="sm" label="Min" bind:value={$character.mind} />
+            <NumberField size="sm" label="Tec" bind:value={$character.tech} />
+          </div>
+          <div class="two">
+            <div class="mini-col">
+              <div class="inv-head">
+                <span class="cap">Inventory</span>
+                <button
+                  class="invtog"
+                  on:click={() => (invHalf = invHalf === 0 ? 1 : 0)}
+                  title="Cycle character inventory slots"
+                >
+                  {invHalf === 0 ? '1-4' : '5-8'}
+                </button>
+              </div>
+              {#each [0, 1, 2, 3] as j}
+                <TextField bind:value={$character.inventory[invHalf * 4 + j]} />
+              {/each}
+            </div>
+            <div class="mini-col">
+              <span class="cap">Skills</span>
+              {#each $character.skills as _, j}
+                <TextField placeholder={`Skill ${j + 1}`} bind:value={$character.skills[j]} />
+              {/each}
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <TextField sans placeholder="Role" bind:value={$starship.crew[i].role} />
-          <TextField placeholder="Passive" bind:value={$starship.crew[i].passive} />
-        </div>
-        <div class="row cstats">
-          {#each crewStats as [lbl, key]}
-            <NumberField size="sm" label={lbl} bind:value={$starship.crew[i][key]} />
-          {/each}
-        </div>
-        <div class="two">
-          <div class="mini-col">
-            <span class="cap">Inventory</span>
-            {#each $starship.crew[i].inventory as _, j}
-              <TextField bind:value={$starship.crew[i].inventory[j]} />
+      {:else}
+        <div class="sheet member">
+          <div class="member-head">
+            <span class="cnum">{i + 1}</span>
+            <TextField sans placeholder="Name" bind:value={$starship.crew[i].name} />
+            <NumberField size="sm" label="HP" bind:value={$starship.crew[i].hp} />
+            <NumberField size="sm" label="Armor" bind:value={$starship.crew[i].armor} />
+          </div>
+          <div class="row">
+            <TextField sans placeholder="Role" bind:value={$starship.crew[i].role} />
+            <TextField placeholder="Passive" bind:value={$starship.crew[i].passive} />
+          </div>
+          <div class="row cstats">
+            {#each crewStats as [lbl, key]}
+              <NumberField size="sm" label={lbl} bind:value={$starship.crew[i][key]} />
             {/each}
           </div>
-          <div class="mini-col">
-            <span class="cap">Skills</span>
-            {#each $starship.crew[i].skills as _, j}
-              <TextField placeholder={`Skill ${j + 1}`} bind:value={$starship.crew[i].skills[j]} />
-            {/each}
+          <div class="two">
+            <div class="mini-col">
+              <span class="cap">Inventory</span>
+              {#each $starship.crew[i].inventory as _, j}
+                <TextField bind:value={$starship.crew[i].inventory[j]} />
+              {/each}
+            </div>
+            <div class="mini-col">
+              <span class="cap">Skills</span>
+              {#each $starship.crew[i].skills as _, j}
+                <TextField placeholder={`Skill ${j + 1}`} bind:value={$starship.crew[i].skills[j]} />
+              {/each}
+            </div>
           </div>
         </div>
-      </div>
+      {/if}
     {/each}
   </div>
 </div>
@@ -250,6 +298,24 @@
     font-size: 14px;
     text-transform: uppercase;
     opacity: 0.75;
+  }
+  .inv-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .invtog {
+    background: var(--accent-2);
+    color: var(--c-cream);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 1px 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+  .invtog:hover {
+    background: var(--accent);
   }
   .conn-head {
     display: flex;

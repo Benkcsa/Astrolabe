@@ -114,9 +114,7 @@
   <!-- RIGHT: identity & gear -->
   <div class="col">
     <div class="sheet block">
-      <span class="label">Role</span>
-      <TextField sans placeholder="Role" bind:value={$character.role} />
-      <span class="cap2">Passive</span>
+      <span class="label">Passive</span>
       <TextField placeholder="Passive" bind:value={$character.passive} />
       <span class="cap2">Skills</span>
       {#each $character.skills as _, i}
