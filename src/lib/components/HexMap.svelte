@@ -6,6 +6,11 @@
   let mode: 'edit' | 'move' = 'move';
   let selectedHex: number | null = null;
 
+  function setMode(m: 'edit' | 'move') {
+    mode = m;
+    selectedHex = null;
+  }
+
   const SIZE = 40;
   const HH = Math.sqrt(3) * SIZE; // flat-top hex height
 
@@ -182,8 +187,8 @@
   <div class="head">
     <span class="title">Star System</span>
     <div class="modes">
-      <button class:active={mode === 'edit'} on:click={() => (mode = 'edit')}>Edit</button>
-      <button class:active={mode === 'move'} on:click={() => (mode = 'move')}>Move</button>
+      <button class:active={mode === 'edit'} on:click={() => setMode('edit')}>Edit</button>
+      <button class:active={mode === 'move'} on:click={() => setMode('move')}>Move</button>
       <button class="clear" on:click={clearMap}>Clear</button>
     </div>
   </div>
@@ -283,7 +288,7 @@
           {#each SWATCHES as sw}
             <button
               class="sw"
-              class:selsw={(hexes[0].color ?? '#130c1b') === sw.value}
+              class:selsw={(hexes[0].color ?? '#fdbb5b') === sw.value}
               style={sw.value ? `background:${sw.value}` : ''}
               title={sw.label}
               aria-label={sw.label}
@@ -352,7 +357,7 @@
     display: block;
   }
   .starcircle {
-    fill: var(--c-ink);
+    fill: #fdbb5b;
     pointer-events: none;
   }
   .hex-base {
