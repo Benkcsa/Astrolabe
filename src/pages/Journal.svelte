@@ -89,7 +89,7 @@
 
   <div class="entries">
     {#if $journal.entries.length === 0}
-      <div class="empty">No entries yet. Click ?+ Entry? to start your log.</div>
+      <div class="empty">No entries yet. Click + Entry to start your log.</div>
     {/if}
     {#each $journal.entries as entry (entry.id)}
       <article class="entry" class:active={entry.id === $journal.activeId}>
