@@ -1,8 +1,7 @@
-import { writable, type Writable, get } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
 import { addImage, getImage, listImages, removeImage } from '../db/db';
 import type { StoredImage } from '../db/types';
 import { uid } from '../db/defaults';
-import { activeCampaignId } from './campaign';
 
 export const images: Writable<StoredImage[]> = writable([]);
 
@@ -10,22 +9,15 @@ export const images: Writable<StoredImage[]> = writable([]);
 const urlCache = new Map<string, string>();
 
 export async function refreshImages(): Promise<void> {
-  const id = get(activeCampaignId);
-  if (!id) {
-    images.set([]);
-    return;
-  }
-  images.set(await listImages(id));
+  images.set(await listImages());
 }
 
 export async function uploadImages(files: FileList | File[], category: string): Promise<void> {
-  const campaignId = get(activeCampaignId);
-  if (!campaignId) return;
   for (const file of Array.from(files)) {
     if (!file.type.startsWith('image/')) continue;
     const img: StoredImage = {
       id: uid(),
-      campaignId,
+      campaignId: 'global',
       name: file.name,
       category: category || 'Uncategorized',
       blob: file,

@@ -5,6 +5,7 @@ import {
   listCampaigns,
   putCampaign,
   deleteCampaign,
+  listImages,
   getMeta,
   setMeta
 } from '../db/db';
@@ -63,8 +64,15 @@ starship.subscribe((v) => persist('starship', v));
 starSystem.subscribe((v) => persist('starSystem', v));
 journal.subscribe((v) => persist('journal', v));
 layout.subscribe((v) => persist('layout', v));
-imageCategories.subscribe((v) => persist('imageCategories', v));
 factions.subscribe((v) => persist('factions', v));
+
+// Image categories are global (shared across campaigns) and stored in meta.
+let categoriesLoaded = false;
+imageCategories.subscribe((v) => {
+  if (!categoriesLoaded) return;
+  clearTimeout(timers['imageCategories']);
+  timers['imageCategories'] = setTimeout(() => void setMeta('imageCategories', v), 250);
+});
 
 function toMap(v: unknown): Record<string, number> {
   if (Array.isArray(v)) {
@@ -120,9 +128,6 @@ async function loadCampaignState(id: string) {
     lay.sizes4 = [lay.sizes4[0], lay.sizes4[1], lay.sizes4[1]];
   }
   layout.set(lay ? { ...defaultLayout(), ...lay } : defaultLayout());
-  imageCategories.set(
-    (await loadSection<string[]>(id, 'imageCategories')) ?? ['Uncategorized']
-  );
   factions.set((await loadSection<FactionDef[]>(id, 'factions')) ?? defaultFactions());
   reconcileFactionMaps();
   loading = false;
@@ -188,6 +193,18 @@ export async function initApp(): Promise<void> {
     list = [c];
   }
   campaigns.set(list);
+
+  // Global (campaign-independent) image categories.
+  const savedCats = await getMeta<string[]>('imageCategories');
+  if (savedCats && savedCats.length) {
+    imageCategories.set(savedCats);
+  } else {
+    const imgs = await listImages();
+    const distinct = Array.from(new Set(['Uncategorized', ...imgs.map((i) => i.category).filter(Boolean)]));
+    imageCategories.set(distinct);
+    await setMeta('imageCategories', distinct);
+  }
+  categoriesLoaded = true;
 
   const savedActive = await getMeta<string>('activeCampaignId');
   const active = savedActive && list.some((c) => c.id === savedActive) ? savedActive : list[0].id;

@@ -5,7 +5,6 @@ import {
   starSystem,
   journal,
   layout,
-  imageCategories,
   factions,
   campaigns,
   activeCampaignId,
@@ -30,7 +29,6 @@ export function exportActiveCampaign(): void {
     starSystem: get(starSystem),
     journal: get(journal),
     layout: get(layout),
-    imageCategories: get(imageCategories),
     factions: get(factions)
   };
 
@@ -64,7 +62,6 @@ export async function importCampaignFromFile(file: File): Promise<void> {
   await saveSection(newId, 'starSystem', data.starSystem);
   await saveSection(newId, 'journal', data.journal);
   if (data.layout) await saveSection(newId, 'layout', data.layout);
-  if (data.imageCategories) await saveSection(newId, 'imageCategories', data.imageCategories);
   if (data.factions) await saveSection(newId, 'factions', data.factions);
 
   // Reload the just-imported campaign so stores reflect it.

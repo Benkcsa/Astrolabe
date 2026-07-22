@@ -50,9 +50,13 @@
     const id = $activeCampaignId;
     if (!id) return;
     const current = $campaigns.find((c) => c.id === id);
-    if (!confirm(`Delete campaign "${current?.name}"? This removes its sheets and images.`)) return;
+    if (
+      !confirm(
+        `Delete campaign "${current?.name}"? This removes its sheets. Uploaded files are shared and will be kept.`
+      )
+    )
+      return;
     await removeCampaign(id);
-    await refreshImages();
   }
 
   const paneCounts: (1 | 2 | 3 | 4)[] = [1, 2, 3, 4];

@@ -64,12 +64,10 @@ export async function putCampaign(c: Campaign): Promise<void> {
 
 export async function deleteCampaign(id: string): Promise<void> {
   const db = await getDB();
-  // Remove campaign, its state sections and images.
+  // Remove campaign and its state sections. Uploaded images are global and kept.
   await db.delete('campaigns', id);
-  const sections = ['character', 'starship', 'starSystem', 'journal', 'layout', 'imageCategories', 'factions'];
+  const sections = ['character', 'starship', 'starSystem', 'journal', 'layout', 'factions'];
   await Promise.all(sections.map((s) => db.delete('state', `${id}:${s}`)));
-  const imgs = await db.getAllFromIndex('images', 'byCampaign', id);
-  await Promise.all(imgs.map((img) => db.delete('images', img.id)));
 }
 
 /* ---------- Section state ---------- */
@@ -94,9 +92,9 @@ export async function getImage(id: string): Promise<StoredImage | undefined> {
   return db.get('images', id);
 }
 
-export async function listImages(campaignId: string): Promise<StoredImage[]> {
+export async function listImages(): Promise<StoredImage[]> {
   const db = await getDB();
-  const imgs = await db.getAllFromIndex('images', 'byCampaign', campaignId);
+  const imgs = await db.getAll('images');
   return imgs.sort((a, b) => a.createdAt - b.createdAt);
 }
 

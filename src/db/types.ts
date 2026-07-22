@@ -189,6 +189,6 @@ export interface CampaignExport {
   starSystem: StarSystemState;
   journal: JournalState;
   layout: LayoutState;
-  imageCategories: string[];
+  imageCategories?: string[]; // legacy; image categories are now global
   factions?: FactionDef[];
 }
